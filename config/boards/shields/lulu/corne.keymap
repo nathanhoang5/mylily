@@ -1,0 +1,98 @@
+// Copyright 2022 jack (@waffle87)
+// SPDX-License-Identifier: MIT
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include "util.h"
+
+&lt {
+    tapping-term-ms = <100>;
+};
+
+/ {
+  keymap {
+    compatible = "zmk,keymap";
+      qwerty {
+        bindings = <
+          &none &kp  Q &kp W &kp E &kp R  &kp T      &kp Y &kp  U &kp I     &kp O   &kp P     &none
+          &none HRML(A,    S,    D,    F) &kp G      &kp H HRMR(J,    K,        L,      SEMI) &none
+          &none &kp  Z &kp X &kp C &kp V  &kp B      &kp N &kp  M &kp COMMA &kp DOT &kp FSLH  &none
+                     &updir &lt 2 ESC &kp SPACE      &kp BSPC &lt 3 RS(RC(V)) &pnp
+        >;
+      };
+      colemak {
+        bindings = <
+          &trans &kp  Q &kp W &kp F &kp P  &kp G      &kp J &kp  L &kp U     &kp Y   &kp SEMI &trans
+          &trans HRML(A,    R,    S,    T) &kp D      &kp H HRMR(N,    E,        I,      O)   &trans
+          &trans &kp  Z &kp X &kp C &kp V  &kp B      &kp N &kp  M &kp COMMA &kp DOT &kp FSLH &trans
+                            &trans &trans &trans      &trans &trans &trans  
+        >;
+      };
+      2 {
+        bindings = <
+          &trans &kp  N1       &kp N2  &kp N3   &kp N4    &kp N5         &kp N6    &kp  N7   &kp N8     &kp N9     &kp N0       &trans
+          &trans HRML(EXCL,        AT,     HASH,    DLLR) &kp PRCNT      &kp CARET HRMR(AMPS,    ASTRK,     LPAR,      RPAR)    &trans
+          &trans &kp  C_VOL_DN &kp TAB &kp CAPS &kp TILDE &kp GRAVE      &kp LEFT  &kp  DOWN &kp UP     &kp RIGHT  &kp C_VOL_UP &trans
+                                                 &none &trans &none      &none &none &none
+        >;
+      };
+      3 {
+        bindings = <
+          &trans &bootloader &bt BT_NXT &none  &none  &none       &none  &none  &none  &none  &none   &trans
+          &trans &bt BT_CLR  &bt BT_PRV &none  &none  &none       &none  &none  &none  &none  &none   &trans
+          &trans &kp F1      &kp F2     &kp F3 &kp F4 &kp F5      &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &trans
+                                           &none &none &none      &none &trans &none
+        >;
+      };
+  };
+
+  behaviors {
+    hm: homerow_mods {
+        compatible = "zmk,behavior-hold-tap";
+        label = "HOMEROW_MODS";
+        #binding-cells = <2>;
+        tapping-term-ms = <150>;
+        quick_tap_ms = <0>;
+        flavor = "tap-preferred";
+        bindings = <&kp>, <&kp>;
+    };
+
+    pnp: play_next_prev {
+        compatible = "zmk,behavior-tap-dance";
+        label = "PLAY_NEXT_PREV";
+        #binding-cells = <0>;
+        tapping-term-ms = <210>;
+        bindings = <&kp C_PLAY>, <&kp C_NEXT>, <&kp C_PREV>;
+    };
+  };
+
+  macros {
+    updir: updir {
+      label = "UP_DIR";
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings = <&macro_tap &kp DOT &kp DOT &kp FSLH>;
+    };
+  };
+
+  combos {
+    compatible = "zmk,combos";
+      //    name  output      pos.   layer
+      COMBO(entr, &kp RET,    4 7,   0 1)
+      COMBO(quot, &kp SQT,    17 18, 0 1)
+      COMBO(dquo, &kp DQT,    27 32, 0 1)
+      COMBO(lbrc, &kp LBRC,   3 4,   0 1)
+      COMBO(rbkt, &kp LBKT,   7 8,   0 1)
+      COMBO(bksl, &kp BSLH,   3 8,   0 1)
+      COMBO(coln, &kp COLON,  5 6,   0 1)
+      COMBO(plus, &kp PLUS,   14 21, 0 1)
+      COMBO(ques, &kp QMARK,  28 31, 0 1)
+      COMBO(unds, &kp UNDER,  29 30, 0 1)
+      COMBO(mins, &kp MINUS,  2 9,   0 1)
+      COMBO(eqal, &kp EQUAL,  15 20, 0 1)
+      COMBO(capw, &caps_word, 16 19, 0 1)
+      COMBO(clmk, &tog 1,     0 10,  0)
+      COMBO(qwrt, &tog 0,     0 10,  1)
+  };
+};
